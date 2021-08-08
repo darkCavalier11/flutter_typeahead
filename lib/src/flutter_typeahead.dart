@@ -1224,11 +1224,11 @@ class _SuggestionsListState<T> extends State<_SuggestionsList<T>>
   }
 
   Widget createSuggestionsWidget() {
-    Widget child = NotificationListener<ScrollNotification>(
-      onNotification: (_) {
+    Widget child = GestureDetector(
+      onPanDown: (_) async {
         FocusScope.of(context).requestFocus(FocusNode());
+        await Future.delayed(Duration(seconds: 0));
         widget.suggestionsBox!.open();
-        return false;
       },
       child: ListView(
         padding: EdgeInsets.zero,
@@ -1604,7 +1604,9 @@ class _SuggestionsBox {
       : desiredDirection = direction;
 
   void open() {
+    print('Trying to open...$isOpened');
     if (this.isOpened) return;
+    print('Overlay is closed');
     assert(this._overlayEntry != null);
     Overlay.of(context)!.insert(this._overlayEntry!);
     this.isOpened = true;
